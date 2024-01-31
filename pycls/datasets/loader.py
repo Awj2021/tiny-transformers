@@ -25,8 +25,8 @@ from torch.utils.data.sampler import RandomSampler
 _DATASETS = {'cifar100': Cifar100, 'flowers': Flowers, "chaoyang": Chaoyang, "tiny_imagenet": TinyImageNet}
 
 _DATA_DIR = os.path.join('.', "data")
-if not os.path.exists(_DATA_DIR):
-    os.makedirs(_DATA_DIR)
+# if not os.path.exists(_DATA_DIR):
+#     os.makedirs(_DATA_DIR)
 
 _PATHS = {"cifar100": "", 'flowers': "flowers", "chaoyang": "chaoyang", "tiny_imagenet": "tiny-imagenet-200"}
 

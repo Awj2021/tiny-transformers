@@ -16,3 +16,4 @@ einops
 scipy
 tensorboard
 timm
+fvcore
