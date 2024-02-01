@@ -14,7 +14,7 @@ class Chaoyang(BaseDataset):
         splits = ["train", "test"]
         assert split in splits, "Split '{}' not supported for Chaoyang".format(split)
         self.data_path = data_path
-        with open(os.path.join(data_path, f'{split}.json'), 'r') as f:
+        with open(os.path.join(data_path, f'json/{split}.json'), 'r') as f:
             anns = json.load(f)
         self.data = anns
 
