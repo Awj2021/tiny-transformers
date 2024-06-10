@@ -29,6 +29,10 @@ import torch
 import torch.cuda.amp as amp
 from pycls.core.config import cfg
 from pycls.core.io import cache_url, pathmgr
+import ipdb
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+
 
 
 logger = logging.get_logger(__name__)
@@ -90,6 +94,8 @@ def train_epoch(loader, model, ema, loss_fun, optimizer, scheduler, scaler, mete
     meter.iter_tic()
     for cur_iter, (inputs, labels, offline_features) in enumerate(loader):
         inputs, labels = inputs.cuda(), labels.cuda(non_blocking=True)
+        # check the size of input.
+        # ipdb.set_trace()
         offline_features = [f.cuda() for f in offline_features]
         labels_one_hot = net.smooth_one_hot_labels(labels)
         inputs, labels_one_hot, labels = net.mixup(inputs, labels_one_hot)
@@ -128,6 +134,8 @@ def test_epoch(loader, model, meter, cur_epoch):
     model.eval()
     meter.reset()
     meter.iter_tic()
+    all_preds = []
+    all_labels = []
     for cur_iter, (inputs, labels, _) in enumerate(loader):
         inputs, labels = inputs.cuda(), labels.cuda(non_blocking=True)
         preds = model(inputs)
@@ -138,6 +146,19 @@ def test_epoch(loader, model, meter, cur_epoch):
         meter.update_stats(top1_err, top5_err, inputs.size(0) * cfg.NUM_GPUS)
         meter.log_iter_stats(cur_epoch, cur_iter)
         meter.iter_tic()
+
+        # Store all labels and predictions for confusion matrix
+        all_preds.extend(preds.argmax(dim=1).cpu().numpy())
+        all_labels.extend(labels.cpu().numpy())
+    # Compute and print confusion matrix after testing
+    cm = confusion_matrix(all_labels, all_preds)
+    print("Confusion matrix:")
+    print(cm)
+
+    report = classification_report(all_labels, all_preds, output_dict=True)
+    print("Classification report:")
+    print(report)
+
     meter.log_epoch_stats(cur_epoch)
 
 

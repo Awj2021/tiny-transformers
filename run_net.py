@@ -28,6 +28,7 @@ def parse_args():
     parser.add_argument("--cfg", help=help_s, required=True, type=str)
     help_s = "See pycls/core/config.py for all options"
     parser.add_argument("opts", help=help_s, default=None, nargs=argparse.REMAINDER)
+    parser.add_argument("--output_dir", type=str, default='work_dirs', help='Output dir of results.')
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
@@ -40,7 +41,7 @@ def main():
     config.load_cfg(args.cfg)
     cfg.merge_from_list(args.opts)
     if cfg.OUT_DIR is None:
-        out_dir = os.path.join('work_dirs', os.path.splitext(os.path.basename(args.cfg))[0])
+        out_dir = os.path.join(args.output_dir, os.path.splitext(os.path.basename(args.cfg))[0])
         cfg.OUT_DIR = out_dir
     config.assert_cfg()
     cfg.freeze()
