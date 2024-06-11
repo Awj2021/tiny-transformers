@@ -213,6 +213,9 @@ _C.TRAIN.CUTMIX_ALPHA = 0.0
 
 _C.TRAIN.STRONG_AUGMENTATION = True 
 
+_C.TRAIN.TRAIN_JSON_FOLDER = 'json'
+_C.TRAIN.TRAIN_JSON_FILE = 'train_ori.json'
+
 
 # --------------------------------- Testing options ---------------------------------- #
 _C.TEST = CfgNode()

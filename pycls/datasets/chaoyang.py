@@ -8,7 +8,7 @@ from pycls.core.io import pathmgr
 
 class Chaoyang(BaseDataset):
 
-    def __init__(self, data_path, split):
+    def __init__(self, data_path, split, train_json_folder, train_json_file):
         """
         data_path: /home/wenjie/dataset/chaoyang/
         split: 'train' or 'test'
@@ -30,11 +30,15 @@ class Chaoyang(BaseDataset):
         # cy_split_2_text_diff_ratio_ax2_dax4: train_classification.json, test_split_2.json
 
         # ----------------------------- to be modified -----------------------------
-        self.train_folder = 'version_cy_ori_split_text_epoch_30'  # json | version_cy_ori_split_text | version_cy_ori_split_text_epoch_40
-
+        # self.train_folder = 'version_cy_ori_split_text_epoch_40'  # json | version_cy_ori_split_text | version_cy_ori_split_text_epoch_40
+        # splits = {"train": "data_mix.json", "test": "test_ori.json"}        # version_cy_ori_split_text
         # ----------------------------- to be modified -----------------------------
-        splits = {"train": "data_mix.json", "test": "test.json"}        # version_cy_ori_split_text
 
+        # self.train_folder = 'json'  # json | version_cy_ori_split_text | version_cy_ori_split_text_epoch_40
+        # splits = {"train": "train_ori.json", "test": "test_ori.json"}        # version_cy_ori_split_text
+
+        self.train_folder = train_json_folder
+        splits = {"train": train_json_file, "test": "test_ori.json"}        # version_cy_ori_split_text
         assert self.split in splits, f"Split '{self.split}' not supported for Chaoyang"
         self.data_path = data_path
 

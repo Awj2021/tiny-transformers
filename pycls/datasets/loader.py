@@ -35,7 +35,10 @@ def _construct_loader(dataset_name, split, batch_size, shuffle, drop_last):
     err_str = "Dataset '{}' not supported".format(dataset_name)
     assert dataset_name in _DATASETS and dataset_name in _PATHS, err_str
     data_path = os.path.join(_DATA_DIR, _PATHS[dataset_name]) # /home/wenjie/dataset/chaoyang/
-    dataset = _DATASETS[dataset_name](data_path, split)
+    if dataset_name == 'chaoyang':
+        dataset = _DATASETS[dataset_name](data_path, split, cfg.TRAIN.TRAIN_JSON_FOLDER, cfg.TRAIN.TRAIN_JSON_FILE)
+    else:
+        dataset = _DATASETS[dataset_name](data_path, split)
     sampler = DistributedSampler(dataset) if cfg.NUM_GPUS > 1 else None
     loader = torch.utils.data.DataLoader(
         dataset,
